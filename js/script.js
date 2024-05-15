@@ -129,7 +129,7 @@ if (inventoryPage) {
     } 
 
     const heroInventoryArtifactsContainer = inventoryPage.querySelector('.char-inventory__artifact-list');
-    const heroInventoryArtifactsTemplate = `<li class="char-inventory__artifact-item"><img src="./img/" alt="" width="20" height="20"></li>`;
+    const heroInventoryArtifactsTemplate = `<li class="char-inventory__artifact-item"><img src="./img/" alt="" width="20" height="20" draggable="true"></li>`;
 
     for (let i = 0; i < usingHero.choosingCharacter.inventoryArtifacts.length; i++) {
         heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
@@ -263,4 +263,52 @@ if (inventoryPage) {
             localStorage.setItem('heroHitPoints', heroHp.value);
         }
     }
+
+    const heroUsingArtifactsList = inventoryPage.querySelector('.using-artifacts__list');
+    const heroUsingArtifacts = heroUsingArtifactsList.querySelectorAll('.using-artifacts__item');
+    heroInventoryArtifactsContainer;
+
+    let dragged = null;
+    let replacement = null;
+
+    heroUsingArtifacts.forEach(item => {
+        item.querySelector('img').addEventListener("dragstart", (evt) => {
+            dragged = evt.target
+        });
+    });
+
+    heroInventoryArtifacts.forEach(item => {
+        item.querySelector('img').addEventListener("dragstart", (evt) => {
+            dragged = evt.target
+        });
+    });
+
+    heroUsingArtifactsList.addEventListener("dragover", (e) => e.preventDefault());
+    heroInventoryArtifactsContainer.addEventListener("dragover", (e) => e.preventDefault());
+
+    heroUsingArtifactsList.addEventListener("drop", (e) => { 
+        // нужно обновлять  heroInventoryArtifactsContainer
+        heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
+        heroInventoryArtifactsContainer.lastChild.querySelector('img').src = e.target.src;
+        for (const artifact of heroUsingArtifactsList.children) {
+            if (e.target == artifact.querySelector('img')) { 
+                replacement = e.target;               
+                replacement.src = dragged.src;
+                heroInventoryArtifactsContainer.removeChild(dragged.parentElement);
+            }
+        }
+    });
+    
+    heroInventoryArtifactsContainer.addEventListener("drop", (e) => {
+        // нужно обновлять  heroInventoryArtifactsContainer
+        heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
+        heroInventoryArtifactsContainer.lastChild.querySelector('img').src = dragged.src;
+        for (const artifact of heroInventoryArtifactsContainer.children) {
+            if (e.target == artifact.querySelector('img')) { 
+                replacement = e.target;               
+                dragged.src = replacement.src;
+                heroInventoryArtifactsContainer.removeChild(e.target.parentElement);
+            }
+        }
+    });
 } 
