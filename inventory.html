@@ -41,7 +41,7 @@
                         <label for="srt">Сила</label>
                         <div class="char-statistics__assignment-char-container">
                             <button class="char-stats__remove-btn str__remove-btn" type="button">-</button>
-                            <input class="statistic-str none-focus" id="srt" type="number" value="10">
+                            <input class="statistic-str none-focus" id="srt" type="number" value="10" min="10">
                             <button class="char-stats__add-btn str__add-btn" type="button">+</button>
                         </div>
                     </li>
@@ -49,7 +49,7 @@
                         <label for="agi">Ловкость</label>
                         <div class="char-statistics__assignment-char-container">
                             <button class="char-stats__remove-btn agi__remove-btn" type="button">-</button>
-                            <input class="statistic-agi none-focus" id="agi" type="number" value="10">
+                            <input class="statistic-agi none-focus" id="agi" type="number" value="10" min="10">
                             <button class="char-stats__add-btn agi__add-btn" type="button">+</button>
                         </div>
                     </li>
@@ -57,7 +57,7 @@
                         <label for="int">Интелект</label>
                         <div class="char-statistics__assignment-char-container">
                             <button class="char-stats__remove-btn int__remove-btn" type="button">-</button>
-                            <input class="statistic-int none-focus" id="int" type="number" value="10">
+                            <input class="statistic-int none-focus" id="int" type="number" value="10" min="10">
                             <button class="char-stats__add-btn int__add-btn" type="button">+</button>
                         </div>
                     </li>
@@ -65,7 +65,7 @@
                         <label for="vit">Живучесть</label>
                         <div class="char-statistics__assignment-char-container">
                             <button class="char-stats__remove-btn vit__remove-btn" type="button">-</button>
-                            <input class="statistic-vit none-focus" id="vit" type="number" value="10">
+                            <input class="statistic-vit none-focus" id="vit" type="number" value="10" min="10">
                             <button class="char-stats__add-btn vit__add-btn" type="button">+</button>
                         </div>
                     </li>
@@ -95,6 +95,9 @@
                         <p class="inventory-section-char-info__elem inventory-section__char-name">Имя</p>
                     </li>
                     <li class="inventory-section-char-info__item">
+                        <p class="inventory-section-char-info__elem inventory-section__char-class">Класс</p>
+                    </li>
+                    <li class="inventory-section-char-info__item">
                         <p class="inventory-section-char-info__elem inventory-section__char-lvl">Уровень: <span class="inventory-section__char-lvl--value">1</span></p>
                     </li>
                     <li class="inventory-section-char-info__item">
@@ -104,35 +107,37 @@
                         <p class="inventory-section-char-info__elem inventory-section__char-gold">Gold: <span class="inventory-section__char-gold--value">1000</span></p>
                     </li>
                 </ul>
-                <img class="inventory-section__char-img" src="" alt="" width="100" height="100">
+                <img class="inventory-section__char-img" src="img/idle.gif" alt="" width="100" height="100">
             </div>
             <div class="inventory-section__using-artifacts">
                 <ul class="using-artifacts__list">
-                    <li class="using-artifacts__item using-artifact__helm"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__amulet"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__weapon"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__body"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__shield"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__ring-1"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__boots"><img src="" alt="" width="20" height="20"></li>
-                    <li class="using-artifacts__item using-artifact__ring-2"><img src="" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__helm"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__amulet"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__weapon"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__body"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__shield"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__ring-1"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__boots"><img src="img/" alt="" width="20" height="20"></li>
+                    <li class="using-artifacts__item using-artifact__ring-2"><img src="img/" alt="" width="20" height="20"></li>
                 </ul>
             </div>
             <div class="inventory-section__char-inventory">
                 <ul class="char-inventory__artifact-list">
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
-                    <li class="char-inventory__artifact-item"><img src="" alt="" width="20" height="20"></li>
+                    <!-- <li class="char-inventory__artifact-item"><img src="img/amulet-5.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/body-4.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/bow-3.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/staf-1.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/amulet-5.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/shield-4.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/ring-2.PNG" alt="" width="20" height="20"></li>
+                    <li class="char-inventory__artifact-item"><img src="img/helm-2.PNG" alt="" width="20" height="20"></li> -->
                 </ul>
             </div>
           </form>  
         </section>
     </main>
     <footer></footer>
+    <script src="js/mokData.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
