@@ -288,6 +288,9 @@ if (inventoryPage) {
 
     heroUsingArtifactsList.addEventListener("drop", (e) => { 
         // нужно обновлять  heroInventoryArtifactsContainer
+        // const heroUsingArtifactsList = document.querySelector('.using-artifacts__list');
+        // const heroInventoryArtifactsContainer = document.querySelector('.char-inventory__artifact-list');
+
         heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
         heroInventoryArtifactsContainer.lastChild.querySelector('img').src = e.target.src;
         for (const artifact of heroUsingArtifactsList.children) {
@@ -301,6 +304,9 @@ if (inventoryPage) {
     
     heroInventoryArtifactsContainer.addEventListener("drop", (e) => {
         // нужно обновлять  heroInventoryArtifactsContainer
+        // const heroUsingArtifactsList = document.querySelector('.using-artifacts__list');
+        // const heroInventoryArtifactsContainer = document.querySelector('.char-inventory__artifact-list');
+
         heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
         heroInventoryArtifactsContainer.lastChild.querySelector('img').src = dragged.src;
         for (const artifact of heroInventoryArtifactsContainer.children) {
@@ -312,3 +318,207 @@ if (inventoryPage) {
         }
     });
 } 
+
+const createCharPage = document.querySelector('.create-character-section');
+if (createCharPage) {
+    const createCharAddStatsBtns = createCharPage.querySelectorAll('.start-char__add-btn');
+    const createCharRemoveStatsBtns = createCharPage.querySelectorAll('.start-char__remove-btn');
+
+    const startFreeChar = createCharPage.querySelector('#start-free-char');
+    const startStr = createCharPage.querySelector('#start-str');
+    const startAgi = createCharPage.querySelector('#start-agi');
+    const startInt = createCharPage.querySelector('#start-int');
+    const startVit = createCharPage.querySelector('#start-vit');
+
+    const startAtk = createCharPage.querySelector('#start-atk');
+    const startDef = createCharPage.querySelector('#start-def');
+    const startHp = createCharPage.querySelector('#start-hp');
+    const startMp = createCharPage.querySelector('#start-mp');
+
+    startAtk.value = startStr.value;
+    startDef.value = startAgi.value;
+    startMp.value = startInt.value * 10;
+    startHp.value = startVit.value * 10;
+
+    createCharAddStatsBtns.forEach(item => {
+        item.addEventListener('click', createCharAddStatsBtnsClick);
+    });
+
+    createCharRemoveStatsBtns.forEach(item => {
+        item.addEventListener('click', createCharRemoveStatsBtnsClick);
+    });
+
+    function createCharAddStatsBtnsClick() {
+        if (event.target.classList.contains('start-str__add-btn') && Number(startFreeChar.value) > 0) {
+            startFreeChar.value = Number(startFreeChar.value) - 1;
+            startStr.value = Number(startStr.value) + 1;
+            startAtk.value = Number(startAtk.value) + 1;
+        }
+        if (event.target.classList.contains('start-agi__add-btn') && Number(startFreeChar.value) > 0) {
+            startFreeChar.value = Number(startFreeChar.value) - 1;
+            startAgi.value = Number(startAgi.value) + 1;
+            startDef.value = Number(startDef.value) + 1;
+        }
+        if (event.target.classList.contains('start-int__add-btn') && Number(startFreeChar.value) > 0) {
+            startFreeChar.value = Number(startFreeChar.value) - 1;
+            startInt.value = Number(startInt.value) + 1;
+            startMp.value = Number(startMp.value) + 10;
+        }
+        if (event.target.classList.contains('start-vit__add-btn') && Number(startFreeChar.value) > 0) {
+            startFreeChar.value = Number(startFreeChar.value) - 1;
+            startVit.value = Number(startVit.value) + 1;
+            startHp.value = Number(startHp.value) + 10;
+        }
+    }
+
+    function createCharRemoveStatsBtnsClick() {
+        if (event.target.classList.contains('start-str__remove-btn') && Number(startStr.value) > 10) {
+            startFreeChar.value = Number(startFreeChar.value) + 1;
+            startStr.value = Number(startStr.value) - 1;
+            startAtk.value = Number(startAtk.value) - 1;
+        }
+        if (event.target.classList.contains('start-agi__remove-btn') && Number(startAgi.value) > 10) {
+            startFreeChar.value = Number(startFreeChar.value) + 1;
+            startAgi.value = Number(startAgi.value) - 1;
+            startDef.value = Number(startDef.value) - 1;
+        }
+        if (event.target.classList.contains('start-int__remove-btn') && Number(startInt.value) > 10) {
+            startFreeChar.value = Number(startFreeChar.value) + 1;
+            startInt.value = Number(startInt.value) - 1;
+            startMp.value = Number(startMp.value) - 10;
+        }
+        if (event.target.classList.contains('start-vit__remove-btn') && Number(startVit.value) > 10) {
+            startFreeChar.value = Number(startFreeChar.value) + 1;
+            startVit.value = Number(startVit.value) - 1;
+            startHp.value = Number(startHp.value) - 10;
+        }
+    }
+
+    const createCharHeroName = createCharPage.querySelector('#char-name');
+    const createCharHeroClass = createCharPage.querySelectorAll('.class-choose__input');
+    const createCharBtn = createCharPage.querySelector('.create-character-section__create-new-char-btn');
+    
+    
+    function createNewChar() {
+        let createCharChoosingHeroClass = null;
+        let newHeroName = null;
+        
+        const userInfo = JSON.parse(localStorage.getItem('userChars'));
+
+        if (createCharHeroName.value) {
+            newHeroName = createCharHeroName.value;
+        }
+        else {
+            alert('Введите имя персонажа');
+            return false;
+        }
+
+        createCharHeroClass.forEach(item => {
+            if (item.checked) {
+                createCharChoosingHeroClass = item.value;
+            }
+        });
+
+        const newChar = {
+            name: newHeroName,
+            class: createCharChoosingHeroClass,
+            level: 1,
+            strenght: Number(startStr.value),
+            agillity: Number(startAgi.value),
+            intelligence: Number(startInt.value),
+            vitality: Number(startVit.value),
+            gold: 0,
+            exp: 0,
+            freeCharPoints: Number(startFreeChar.value),
+            killStrick: 0,
+            flag: "normal",
+            usingArtifacts: [
+                
+            ],
+            inventoryArtifacts: [                    
+                
+            ],
+            skills: [
+                {
+                    name: "skill-1",
+                    colddown: 1,
+                    mpPrice: 10
+                },
+                {
+                    name: "skill-2",
+                    colddown: 1,
+                    mpPrice: 10
+                },
+                {
+                    name: "skill-3",
+                    colddown: 1,
+                    mpPrice: 10
+                },
+                {
+                    name: "skill-4",
+                    colddown: 1,
+                    mpPrice: 10
+                },
+            ], 
+        };
+
+        userList.forEach(item => {
+            if(userInfo.userCharacters.login == item.login) {
+                item.characterList.push(newChar);
+                userCharacters = item;
+                localStorage.setItem('userChars', JSON.stringify({userCharacters}));
+            }
+        });
+        
+        window.location.href = 'character-list.html';
+    }
+
+    createCharBtn.addEventListener('click', createNewChar);
+}
+
+const shopPage = document.querySelector('.shop-section'); 
+if (shopPage) {
+    const shopArtifactsContainer = shopPage.querySelector('.shop-artifacts__list');
+    const shopArtifactsTemplate = `
+            <li class="shop-artifacts__item shop-artifact">
+                <img class="shop-artifact__img" src="img/" alt="" width="40" height="40">
+                <ul class="shop-artifact__stats">
+                    <li class="shop-artifact__add-attack">attak: +<span class="shop-artifact__add-attack--value"></span></li>
+                    <li class="shop-artifact__add-defeance">defeance: +<span class="shop-artifact__add-defeance--value"></span></li>
+                    <li class="shop-artifact__add-hp">hp: +<span class="shop-artifact__add-hp--value"></span></li>
+                    <li class="shop-artifact__add-mp">mp: +<span class="shop-artifact__add-mp--value"></span></li>
+                </ul>
+                <p class="shop-artifact__price">Gold: <span class="shop-artifact__price--value"></span></p>
+                <button class="shop-artifact__buy-btn" type="button">Купить</button>
+            </li>
+    `;
+
+    for (let i = 0; i < shopArtifacts.length; i++) {
+        shopArtifactsContainer.insertAdjacentHTML('beforeend', shopArtifactsTemplate);
+    }
+
+    const shopArtifactsItems = shopArtifactsContainer.querySelectorAll('.shop-artifacts__item');
+
+    for (let i = 0; i < shopArtifacts.length; i++) {
+        shopArtifactsItems[i].querySelector('img').src = shopArtifactsItems[i].querySelector('img').src + shopArtifacts[i].name + '.png';
+        shopArtifactsItems[i].querySelector('.shop-artifact__add-attack--value').textContent = shopArtifacts[i].dopAttack;
+        shopArtifactsItems[i].querySelector('.shop-artifact__add-defeance--value').textContent = shopArtifacts[i].dopDefeance;
+        shopArtifactsItems[i].querySelector('.shop-artifact__add-hp--value').textContent = shopArtifacts[i].dopHp;
+        shopArtifactsItems[i].querySelector('.shop-artifact__add-mp--value').textContent = shopArtifacts[i].dopMp;
+        shopArtifactsItems[i].querySelector('.shop-artifact__price--value').textContent = shopArtifacts[i].price;
+    }
+
+    const heroGold = shopPage.querySelector('.shop-section__player-gold--value');
+    let usingHero = JSON.parse(localStorage.getItem('choosingChar'));
+    heroGold.textContent = usingHero.choosingCharacter.gold;
+
+    const buyArtBtns = shopPage.querySelectorAll('.shop-artifact__buy-btn');
+
+    function buyArtBtnsClick() {
+
+    }
+
+    buyArtBtns.forEach(item => {
+        item.addEventListener('click', buyArtBtnsClick);
+    });
+}

@@ -354,9 +354,7 @@ const userList = [
     {
         login: "gamer",
         password: "1111",
-        characterList: [            
-            
-        ],
+        characterList: [],
     },
 ];
 
