@@ -8,11 +8,18 @@ if (autorizationPage) {
     const autorizationPassword = autorizationPage.querySelector('#password');
     const autorizationLoginBtn = autorizationPage.querySelector('.autorization-section__login-btn');
 
+    let userList = JSON.parse(localStorage.getItem('users'));
+    // let userList= null;
+
+    if (!userList) {
+        localStorage.setItem('users', JSON.stringify({ usersList }));
+        userList = JSON.parse(localStorage.getItem('users'));
+    }
 
     function autorization() {
-        userList.forEach(item => {
+        userList.usersList.forEach(item => {
             if (autorizationLogin.value == item.login && autorizationPassword.value == item.password) {
-                userCharacters = item;
+                userCharacters = item.characterList;
                 localStorage.setItem('userChars', JSON.stringify({ userCharacters }));
                 window.location.href = 'character-list.html';
             }
@@ -22,6 +29,29 @@ if (autorizationPage) {
     autorizationLoginBtn.addEventListener('click', autorization);
 }
 
+const registrationPage = document.querySelector('.registration-section');
+if (registrationPage) {
+    const registaritionLogin = registrationPage.querySelector('#login');
+    const registaritionPassword = registrationPage.querySelector('#password');
+    const registaritionBtn = registrationPage.querySelector('.registration-section__signup-btn');
+    let userList = JSON.parse(localStorage.getItem('users'));
+
+    function registration() {
+        const newUser = {
+            login: registaritionLogin.value,
+            password: registaritionPassword.value,
+            characterList: [],
+        };
+
+        const usersList = userList.usersList;
+        usersList.push(newUser);
+
+        localStorage.setItem('users', JSON.stringify({ usersList }));
+        window.location.href = 'autorization.html';
+    }
+
+    registaritionBtn.addEventListener('click', registration);
+}
 
 const characterListPage = document.querySelector('.character-list-section');
 if (characterListPage) {
@@ -42,7 +72,7 @@ if (characterListPage) {
 
     function showUserCharacterList() {
         const userInfo = JSON.parse(localStorage.getItem('userChars'));
-        const userChars = userInfo.userCharacters.characterList;
+        const userChars = userInfo.userCharacters;
 
         for (let i = 0; i < userChars.length; i++) {
             userCharacterListContainer.insertAdjacentHTML('beforeend', userCharacterItemtemplate);
@@ -76,7 +106,7 @@ if (characterListPage) {
     function chooseHero() {
         const index = event.target.getAttribute('data-char-index');
         const userInfo = JSON.parse(localStorage.getItem('userChars'));
-        const userChars = userInfo.userCharacters.characterList;
+        const userChars = userInfo.userCharacters;
         choosingCharacter = userChars[index];
 
         localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
@@ -88,6 +118,7 @@ if (characterListPage) {
 const inventoryPage = document.querySelector('.inventory-section');
 if (inventoryPage) {
     let usingHero = JSON.parse(localStorage.getItem('choosingChar'));
+    let choosingCharacter = usingHero.choosingCharacter;
     const heroFreeChar = inventoryPage.querySelector('#free-char');
     const heroStr = inventoryPage.querySelector('#srt');
     const heroAgi = inventoryPage.querySelector('#agi');
@@ -106,103 +137,16 @@ if (inventoryPage) {
     const heroGold = inventoryPage.querySelector('.inventory-section__char-gold--value');
     const heroImage = inventoryPage.querySelector('.inventory-section__char-img');
 
-    heroFreeChar.value = usingHero.choosingCharacter.freeCharPoints;
-    heroStr.value = usingHero.choosingCharacter.strenght;
-    heroAgi.value = usingHero.choosingCharacter.agillity;
-    heroInt.value = usingHero.choosingCharacter.intelligence;
-    heroVit.value = usingHero.choosingCharacter.vitality;
-
-    heroName.textContent = usingHero.choosingCharacter.name;
-    heroClass.textContent = usingHero.choosingCharacter.class;
-    heroLvl.textContent = usingHero.choosingCharacter.level;
-    heroExp.textContent = usingHero.choosingCharacter.exp;
-    heroNeedExp.textContent = usingHero.choosingCharacter.level * 1000;
-    heroGold.textContent = usingHero.choosingCharacter.gold;
-    if (usingHero.choosingCharacter.class == 'warrior') {
-        heroImage.src = './img/idle.gif';
-    }
-    if (usingHero.choosingCharacter.class == 'archer') {
-        heroImage.src = './img/archer-idle-unfon.gif';
-    }
-    if (usingHero.choosingCharacter.class == 'mage') {
-        heroImage.src = './img/wizard.gif';
-    }
-
     const heroInventoryArtifactsContainer = inventoryPage.querySelector('.char-inventory__artifact-list');
-    const heroInventoryArtifactsTemplate = `<li class="char-inventory__artifact-item"><img src="./img/" alt="" width="20" height="20" draggable="true"></li>`;
+    const heroUsingArtifactsList = inventoryPage.querySelector('.using-artifacts__list');
 
-    for (let i = 0; i < usingHero.choosingCharacter.inventoryArtifacts.length; i++) {
-        heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
-    }
-
-    const heroInventoryArtifacts = inventoryPage.querySelectorAll('.char-inventory__artifact-item');
-
-    for (let i = 0; i < usingHero.choosingCharacter.inventoryArtifacts.length; i++) {
-        heroInventoryArtifacts[i].querySelector('img').src = heroInventoryArtifacts[i].querySelector('img').src + usingHero.choosingCharacter.inventoryArtifacts[i].name + '.png';
-    }
-
-    const heroUsingHelm = inventoryPage.querySelector('.using-artifact__helm');
-    const heroUsingBody = inventoryPage.querySelector('.using-artifact__body');
-    const heroUsingSword = inventoryPage.querySelector('.using-artifact__weapon');
-    const heroUsingShield = inventoryPage.querySelector('.using-artifact__shield');
-    const heroUsingBoots = inventoryPage.querySelector('.using-artifact__boots');
-    const heroUsingAmulet = inventoryPage.querySelector('.using-artifact__amulet');
-    const heroUsingFirstRing = inventoryPage.querySelector('.using-artifact__ring-1');
-    const heroUsingSecondRing = inventoryPage.querySelector('.using-artifact__ring-2');
+    const heroAddStatsBtns = inventoryPage.querySelectorAll('.char-stats__add-btn');
+    const heroRemoveStatsBtns = inventoryPage.querySelectorAll('.char-stats__remove-btn');
 
     let usingArtifactsAddAtkSum = 0;
     let usingArtifactsAddDefSum = 0;
     let usingArtifactsAddHpSum = 0;
     let usingArtifactsAddMpSum = 0;
-
-    for (let i = 0; i < usingHero.choosingCharacter.usingArtifacts.length; i++) {
-        usingArtifactsAddAtkSum += usingHero.choosingCharacter.usingArtifacts[i].dopAttack;
-        usingArtifactsAddDefSum += usingHero.choosingCharacter.usingArtifacts[i].dopDefeance;
-        usingArtifactsAddHpSum += usingHero.choosingCharacter.usingArtifacts[i].dopHp;
-        usingArtifactsAddMpSum += usingHero.choosingCharacter.usingArtifacts[i].dopMp;
-
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'helm') {
-            heroUsingHelm.querySelector('img').src = heroUsingHelm.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-        }
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'body') {
-            heroUsingBody.querySelector('img').src = heroUsingBody.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-        }
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'sword' || usingHero.choosingCharacter.usingArtifacts[0].name.split('-')[0] == 'bow' || usingHero.choosingCharacter.usingArtifacts[0].name.split('-')[0] == 'staf') {
-            heroUsingSword.querySelector('img').src = heroUsingSword.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-        }
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'shield') {
-            heroUsingShield.querySelector('img').src = heroUsingShield.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-        }
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'boots') {
-            heroUsingBoots.querySelector('img').src = heroUsingBoots.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-        }
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'amulet') {
-            heroUsingAmulet.querySelector('img').src = heroUsingAmulet.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-        }
-        if (usingHero.choosingCharacter.usingArtifacts[i].name.split('-')[0] == 'ring') {
-            if (heroUsingFirstRing.querySelector('img').getAttribute('src') == 'img/') {
-                heroUsingFirstRing.querySelector('img').src = heroUsingFirstRing.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-            }
-            else {
-                heroUsingSecondRing.querySelector('img').src = heroUsingSecondRing.querySelector('img').src + usingHero.choosingCharacter.usingArtifacts[i].name + '.png';
-            }
-        }
-    }
-
-    heroAtk.value = usingHero.choosingCharacter.strenght + usingArtifactsAddAtkSum;
-    heroDef.value = usingHero.choosingCharacter.agillity + usingArtifactsAddDefSum;
-    heroHp.value = usingHero.choosingCharacter.vitality * 10 + usingArtifactsAddHpSum;
-    heroMp.value = usingHero.choosingCharacter.intelligence * 10 + usingArtifactsAddMpSum;
-
-    localStorage.setItem('heroAttack', heroAtk.value);
-    localStorage.setItem('heroDefeance', heroDef.value);
-    localStorage.setItem('heroHitPoints', heroHp.value);
-    localStorage.setItem('heroMana', heroMp.value);
-    localStorage.setItem('heroCurrentExp', heroExp.textContent);
-    localStorage.setItem('heroNeedExp', heroNeedExp.textContent);
-
-    const heroAddStatsBtns = inventoryPage.querySelectorAll('.char-stats__add-btn');
-    const heroRemoveStatsBtns = inventoryPage.querySelectorAll('.char-stats__remove-btn');
 
     heroAddStatsBtns.forEach(item => {
         item.addEventListener('click', heroAddStatsBtnsClick);
@@ -237,6 +181,12 @@ if (inventoryPage) {
             heroHp.value = Number(heroHp.value) + 10;
             localStorage.setItem('heroHitPoints', heroHp.value);
         }
+        choosingCharacter.strenght = Number(heroStr.value);
+        choosingCharacter.agillity = Number(heroAgi.value);
+        choosingCharacter.vitality = Number(heroVit.value);
+        choosingCharacter.intelligence = Number(heroInt.value);
+        choosingCharacter.freeCharPoints = Number(heroFreeChar.value);
+        localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
     }
 
     function heroRemoveStatsBtnsClick() {
@@ -264,61 +214,261 @@ if (inventoryPage) {
             heroHp.value = Number(heroHp.value) - 10;
             localStorage.setItem('heroHitPoints', heroHp.value);
         }
+        choosingCharacter.strenght = Number(heroStr.value);
+        choosingCharacter.agillity = Number(heroAgi.value);
+        choosingCharacter.vitality = Number(heroVit.value);
+        choosingCharacter.intelligence = Number(heroInt.value);
+        choosingCharacter.freeCharPoints = Number(heroFreeChar.value);
+        localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
     }
 
-    const heroUsingArtifactsList = inventoryPage.querySelector('.using-artifacts__list');
-    const heroUsingArtifacts = heroUsingArtifactsList.querySelectorAll('.using-artifacts__item');
-    heroInventoryArtifactsContainer;
+    function renderCoreInfo() {
+        heroStr.value = usingHero.choosingCharacter.strenght;
+        heroAgi.value = usingHero.choosingCharacter.agillity;
+        heroInt.value = usingHero.choosingCharacter.intelligence;
+        heroVit.value = usingHero.choosingCharacter.vitality;
 
-    let dragged = null;
-    let replacement = null;
+        heroName.textContent = usingHero.choosingCharacter.name;
+        heroClass.textContent = usingHero.choosingCharacter.class;
 
-    heroUsingArtifacts.forEach(item => {
-        item.querySelector('img').addEventListener("dragstart", (evt) => {
-            dragged = evt.target
-        });
-    });
-
-    heroInventoryArtifacts.forEach(item => {
-        item.querySelector('img').addEventListener("dragstart", (evt) => {
-            dragged = evt.target
-        });
-    });
-
-    heroUsingArtifactsList.addEventListener("dragover", (e) => e.preventDefault());
-    heroInventoryArtifactsContainer.addEventListener("dragover", (e) => e.preventDefault());
-
-    heroUsingArtifactsList.addEventListener("drop", (e) => {
-        // нужно обновлять  heroInventoryArtifactsContainer
-        // const heroUsingArtifactsList = document.querySelector('.using-artifacts__list');
-        // const heroInventoryArtifactsContainer = document.querySelector('.char-inventory__artifact-list');
-
-        heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
-        heroInventoryArtifactsContainer.lastChild.querySelector('img').src = e.target.src;
-        for (const artifact of heroUsingArtifactsList.children) {
-            if (e.target == artifact.querySelector('img')) {
-                replacement = e.target;
-                replacement.src = dragged.src;
-                heroInventoryArtifactsContainer.removeChild(dragged.parentElement);
-            }
+        if (usingHero.choosingCharacter.class == 'warrior') {
+            heroImage.src = './img/idle.gif';
         }
-    });
-
-    heroInventoryArtifactsContainer.addEventListener("drop", (e) => {
-        // нужно обновлять  heroInventoryArtifactsContainer
-        // const heroUsingArtifactsList = document.querySelector('.using-artifacts__list');
-        // const heroInventoryArtifactsContainer = document.querySelector('.char-inventory__artifact-list');
-
-        heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
-        heroInventoryArtifactsContainer.lastChild.querySelector('img').src = dragged.src;
-        for (const artifact of heroInventoryArtifactsContainer.children) {
-            if (e.target == artifact.querySelector('img')) {
-                replacement = e.target;
-                dragged.src = replacement.src;
-                heroInventoryArtifactsContainer.removeChild(e.target.parentElement);
-            }
+        if (usingHero.choosingCharacter.class == 'archer') {
+            heroImage.src = './img/archer-idle-unfon.gif';
         }
-    });
+        if (usingHero.choosingCharacter.class == 'mage') {
+            heroImage.src = './img/wizard.gif';
+        }
+
+        if (usingHero.choosingCharacter.exp >= usingHero.choosingCharacter.level * 1000) {
+            const oldLevel = usingHero.choosingCharacter.level;
+            usingHero.choosingCharacter.level = Math.floor(usingHero.choosingCharacter.exp / 1000) + 1;
+            usingHero.choosingCharacter.freeCharPoints = usingHero.choosingCharacter.freeCharPoints + ((usingHero.choosingCharacter.level - oldLevel) * 4);
+            choosingCharacter.level = usingHero.choosingCharacter.level;
+            choosingCharacter.freeCharPoints = usingHero.choosingCharacter.freeCharPoints;
+            localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
+        }
+        heroLvl.textContent = usingHero.choosingCharacter.level;
+        heroExp.textContent = usingHero.choosingCharacter.exp;
+        heroNeedExp.textContent = usingHero.choosingCharacter.level * 1000;
+        heroGold.textContent = usingHero.choosingCharacter.gold;
+        heroFreeChar.value = usingHero.choosingCharacter.freeCharPoints;
+    }
+
+    const gridTemp = {
+        'helm': {
+            active: false
+        },
+        'weapon': {
+            active: false
+        },
+        'body': {
+            active: false
+        },
+        'shield': {
+            active: false
+        },
+        'boots': {
+            active: false
+        },
+        'first-ring': {
+            active: false
+        },
+        'second-ring': {
+            active: false
+        },
+        'amulet': {
+            active: false
+        }
+    };
+
+    function setArtGridData(artefacts) {
+        Object.entries(gridTemp).forEach(function([key, value]) {
+            value.active = false;
+            value.data = {};
+        });
+
+        artefacts.forEach((obj) => {
+            gridTemp[obj.type].data = obj;
+            gridTemp[obj.type].active = true;
+        });
+    }
+
+    function renderUseArtifacrts() {
+        heroUsingArtifactsList.innerHTML = '';
+        usingHero = JSON.parse(localStorage.getItem('choosingChar'));
+        const artefacts = usingHero.choosingCharacter.usingArtifacts;
+
+
+        setArtGridData(artefacts);
+
+        Object.entries(gridTemp).forEach(([key, value]) => {
+            const item = value.data;
+            
+            const heroUsingArtifactsTemplate = value.active
+                ? `<li class="using-artifacts__item using-artifact__${item.type}">
+                    <img src="img/${item.name}.png" alt="" width="20" height="20" data-art-type=${item.type} data-artname=${item.name} draggable="true">
+                </li>`
+                : `<li class="using-artifacts__item using-artifact__${key}"></li>`;
+            heroUsingArtifactsList.insertAdjacentHTML('beforeend', heroUsingArtifactsTemplate);
+        });
+    }
+
+    function renderInventoryArtifacrts() {
+        heroInventoryArtifactsContainer.innerHTML = '';
+        usingHero = JSON.parse(localStorage.getItem('choosingChar'));
+        usingHero.choosingCharacter.inventoryArtifacts.forEach(item => {
+            const heroInventoryArtifactsTemplate = `
+            <li class="char-inventory__artifact-item">
+                <img src="./img/${item.name}.png" alt="" width="20" height="20" data-art-type=${item.type} data-artname=${item.name} draggable="true">
+            </li>`;
+            heroInventoryArtifactsContainer.insertAdjacentHTML('beforeend', heroInventoryArtifactsTemplate);
+        });
+    }
+
+    function renderSecondaryStats() {
+            usingArtifactsAddAtkSum = 0;
+            usingArtifactsAddDefSum = 0;
+            usingArtifactsAddHpSum = 0;
+            usingArtifactsAddMpSum = 0;
+        usingHero.choosingCharacter.usingArtifacts.forEach(item => {
+            usingArtifactsAddAtkSum += item.dopAttack;
+            usingArtifactsAddDefSum += item.dopDefeance;
+            usingArtifactsAddHpSum += item.dopHp;
+            usingArtifactsAddMpSum += item.dopMp;
+        });
+        heroAtk.value = usingHero.choosingCharacter.strenght + usingArtifactsAddAtkSum;
+        heroDef.value = usingHero.choosingCharacter.agillity + usingArtifactsAddDefSum;
+        heroHp.value = usingHero.choosingCharacter.vitality * 10 + usingArtifactsAddHpSum;
+        heroMp.value = usingHero.choosingCharacter.intelligence * 10 + usingArtifactsAddMpSum;
+        localStorage.setItem('heroAttack', heroAtk.value);
+        localStorage.setItem('heroDefeance', heroDef.value);
+        localStorage.setItem('heroHitPoints', heroHp.value);
+        localStorage.setItem('heroMana', heroMp.value);
+        localStorage.setItem('heroCurrentExp', heroExp.textContent);
+        localStorage.setItem('heroNeedExp', heroNeedExp.textContent);
+    }
+
+    renderCoreInfo();
+    renderSecondaryStats();
+    renderInventoryArtifacrts();
+    renderUseArtifacrts();
+
+    let dragget = null;
+    let replacment = null;
+    let targetZone = null;
+    let target = null;
+
+    let startPos = null;
+    let endPos = null;
+    let startArr = [];
+    let endArr = [];
+
+    function onTargetDragOver(evt) {
+        evt.preventDefault();
+    }
+
+    function getArtData(arr, artName) {
+        const itemData = arr.find(item => item.name == artName);
+        return itemData;
+    }
+
+    function saveDataInLocalStorage(startArr, endArr) {
+        choosingCharacter.usingArtifacts = startArr;
+        choosingCharacter.inventoryArtifacts = endArr;
+
+        if (startPos == 'backpack') {
+            choosingCharacter.usingArtifacts = endArr;
+            choosingCharacter.inventoryArtifacts = startArr;
+        }
+
+        localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
+    }
+
+    function moveArtData(startArr, endArr, dragget, target, flag) {
+        if (startPos == endPos) {
+            return;
+        }
+
+        const startItemData = getArtData(startArr, dragget);
+        startArr.splice(startArr.indexOf(startItemData), 1);
+
+        endArr.push(startItemData);
+
+        if (endPos == 'hero') {
+            endArr.forEach((item) => {
+                if (item.type == startItemData.type && item != startItemData) {
+                    flag = true;
+                    target = item.name;
+                }
+            });
+        }
+
+        if (flag) {
+            const endItemData = getArtData(endArr, target);
+            endArr.splice(endArr.indexOf(endItemData), 1);
+
+            startArr.push(endItemData);
+        }
+
+        saveDataInLocalStorage(startArr, endArr);
+
+        renderSecondaryStats();
+        renderInventoryArtifacrts();
+        renderUseArtifacrts();
+    }
+
+    function onTargetDrop(evt) {
+        target = evt.target;
+        startArr = usingHero.choosingCharacter.usingArtifacts;
+        endArr = usingHero.choosingCharacter.inventoryArtifacts;
+
+        if(target == heroUsingArtifactsList || target.parentElement == heroUsingArtifactsList || target.parentElement.parentElement == heroUsingArtifactsList) {
+            endPos = 'hero';
+        }
+        else {
+            endPos = 'backpack';
+        }
+
+        if (startPos == 'backpack') {
+            startArr = usingHero.choosingCharacter.inventoryArtifacts;
+            endArr = usingHero.choosingCharacter.usingArtifacts;
+        }
+
+        const flag = !!evt.target.src;
+        moveArtData(startArr, endArr, dragget.dataset.artname, target.dataset.artname, flag);
+
+
+    }
+
+    function setDragListener(targetZone) {
+        targetZone.addEventListener('dragover', onTargetDragOver);
+        targetZone.addEventListener('drop', onTargetDrop);
+    }
+
+    function onBackpackDragstart(evt) {
+        startPos = 'backpack';
+        dragget = evt.target;
+
+        targetZone = heroUsingArtifactsList;
+
+        setDragListener(targetZone);
+    }
+
+
+    function onHeroDragstart(evt) {
+        startPos = 'hero';
+        dragget = evt.target;
+
+        targetZone = heroInventoryArtifactsContainer;
+
+        setDragListener(targetZone);
+    }
+
+    heroInventoryArtifactsContainer.addEventListener('dragstart', onBackpackDragstart);
+
+    heroUsingArtifactsList.addEventListener('dragstart', onHeroDragstart);
 }
 
 const createCharPage = document.querySelector('.create-character-section');
@@ -429,7 +579,7 @@ if (createCharPage) {
             agillity: Number(startAgi.value),
             intelligence: Number(startInt.value),
             vitality: Number(startVit.value),
-            gold: 0,
+            gold: 100,
             exp: 0,
             freeCharPoints: Number(startFreeChar.value),
             killStrick: 0,
@@ -442,35 +592,33 @@ if (createCharPage) {
             ],
             skills: [
                 {
-                    name: "skill-1",
-                    colddown: 1,
-                    mpPrice: 10
+                    name: createCharChoosingHeroClass + "-skill-1",
+                    colddown: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill1.cooldown,
+                    mpPrice: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill1.price,
                 },
                 {
-                    name: "skill-2",
-                    colddown: 1,
-                    mpPrice: 10
+                    name: createCharChoosingHeroClass + "-skill-2",
+                    colddown: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill2.cooldown,
+                    mpPrice: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill2.price,
                 },
                 {
-                    name: "skill-3",
-                    colddown: 1,
-                    mpPrice: 10
+                    name: createCharChoosingHeroClass + "-skill-3",
+                    colddown: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill3.cooldown,
+                    mpPrice: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill3.price,
                 },
                 {
-                    name: "skill-4",
-                    colddown: 1,
-                    mpPrice: 10
+                    name: createCharChoosingHeroClass + "-skill-4",
+                    colddown: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill4.cooldown,
+                    mpPrice: SKILLS_COOLDOWN_PRICE[createCharChoosingHeroClass].skill4.price,
                 },
             ],
         };
 
-        userList.forEach(item => {
-            if (userInfo.userCharacters.login == item.login) {
-                item.characterList.push(newChar);
-                userCharacters = item;
-                localStorage.setItem('userChars', JSON.stringify({ userCharacters }));
-            }
-        });
+        userCharacters = userInfo.userCharacters;
+
+        userCharacters.push(newChar);
+
+        localStorage.setItem('userChars', JSON.stringify({ userCharacters }));
 
         window.location.href = 'character-list.html';
     }
@@ -496,7 +644,7 @@ if (shopPage) {
 
     shopArtifactsList.forEach(it => {
         shopArtifactsContainer.insertAdjacentHTML('beforeend', it);
-    });    
+    });
 
     const heroGold = shopPage.querySelector('.shop-section__player-gold--value');
     let usingHero = JSON.parse(localStorage.getItem('choosingChar'));
@@ -507,7 +655,7 @@ if (shopPage) {
     function buyArtBtnsClick() {
         const usingHero = JSON.parse(localStorage.getItem('choosingChar'));
         const buyingArtBtn = event.target.getAttribute('data-buy-art-name');
-        
+
         shopArtifacts.forEach(it => {
             if (it.name == buyingArtBtn) {
                 const buyingArt = {
@@ -517,13 +665,20 @@ if (shopPage) {
                     dopHp: it.dopHp,
                     dopMp: it.dopMp,
                     price: it.price,
+                    type: it.type,
                 };
 
-                // для реализации покупки артефакта необходим сервер
-                usingHero.choosingCharacter.inventoryArtifacts.push(buyingArt);
-                choosingCharacter = usingHero.choosingCharacter;
+                if (usingHero.choosingCharacter.gold >= buyingArt.price) {
+                    usingHero.choosingCharacter.inventoryArtifacts.push(buyingArt);
+                    usingHero.choosingCharacter.gold -= buyingArt.price;
+                    heroGold.textContent = usingHero.choosingCharacter.gold;
+                    choosingCharacter = usingHero.choosingCharacter;
 
-                localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
+                    localStorage.setItem('choosingChar', JSON.stringify({ choosingCharacter }));
+                }
+                else {
+                    alert('недостаточно золота');
+                }
             }
         });
     }
@@ -547,30 +702,3 @@ if (levelListPage) {
     });
 }
 
-const arenaPage = document.querySelector('.screen-game');
-if (arenaPage) {
-    const arenaId = localStorage.getItem('selectedArena');
-    let currentArena = null;
-    let usingHero = JSON.parse(localStorage.getItem('choosingChar'));
-
-    const arenaCharName = arenaPage.querySelector('.char-info-name');
-    const arenaCharLvl = arenaPage.querySelector('.char-info-lvl');
-    const arenaCharHp = arenaPage.querySelector('.panel-xp .score-value span');
-    const arenaCharMp = arenaPage.querySelector('.panel-mp .score-value span');
-    const arenaCharExp = arenaPage.querySelector('.panel-exp .score-value span');
-    const arenaKills = arenaPage.querySelector('.kills-value');
-
-    arenaCharName.textContent = usingHero.choosingCharacter.name;
-    arenaCharLvl.textContent = usingHero.choosingCharacter.level;
-    arenaCharHp.textContent = localStorage.getItem('heroHitPoints');
-    arenaCharMp.textContent = localStorage.getItem('heroMana');
-    arenaCharExp.textContent = localStorage.getItem('heroCurrentExp');
-    arenaKills.textContent = usingHero.choosingCharacter.killStrick;
-
-    arenaList.forEach(item => {
-        if (item.levelNumber == arenaId) {
-            currentArena = item;
-        }
-    });
-
-}

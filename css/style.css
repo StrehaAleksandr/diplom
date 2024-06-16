@@ -25,7 +25,7 @@ ul, ol {
 body {
     background-image: url('../img/bg-game.png');
     background-repeat: no-repeat;
-    background-size: 9000px, 9000px;
+    background-size: 9000px;
 }
 
 .visually-hidden:not(:focus):not(:active),
@@ -58,6 +58,8 @@ input[type="radio"].visually-hidden {
 /*navbar*/
 
 .navbar {
+    position: relative;
+    z-index: 1;
     background-color: rgba(0,0,0,0.5);
     padding: 10px 239px;
 }
@@ -471,6 +473,11 @@ input[type="radio"].visually-hidden {
     margin-bottom: 20px;
 }
 
+.shop-artifacts__list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
 .shop-artifacts__item {
     display: flex;
     justify-content: space-between;
@@ -556,10 +563,18 @@ input[type="radio"].visually-hidden {
 /*end level-list*/
 
 /*arena*/
-
 .screen-game {
-    position: relative;
-    height: 90vh;
+    width: 100vw;
+    height: 100vh;
+    background: url(../img/bg-game.png);
+    background-position: 9558px 0;
+    background-size: cover;
+    overflow: hidden;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .game-panel {
@@ -572,7 +587,7 @@ input[type="radio"].visually-hidden {
 }
 .game-panel-user {
     left: 30px;
-    top: 30px;
+    top: 100px;
 }
 .game-panel-scores {
     bottom: 30px;
@@ -623,6 +638,121 @@ input[type="radio"].visually-hidden {
 }
 .game-panel-skills img {
     margin-left: -1px;
+    border: 1px solid gray;
+    width: 50px;
+    height: 50px;
+}
+.hero {
+    position: absolute;
+    width: 80px;
+    height: 100px;
+    bottom: 100px;
+    left: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.knight, .archer, .mage, .warrior {
+    width: 72px;
+    height: 85px;
+    position: absolute;
+    bottom: 100px;
+    left: 10px;
+    background-image: url(../img/idle.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+}
+.archer {
+    background-image: url(../img/archer-idle-unfon.gif);
+}
+.mage {
+    background-image: url(../img/wizard.gif);
+}   
+.monster-dog {
+    width: 64px;
+    height: 43px;
+    position: absolute;
+    bottom: 100px;
+    background-image: url(../img/dog-run.gif);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.monster-elf {
+    width: 59px;
+    height: 72px;
+    position: absolute;
+    bottom: 100px;
+    background-image: url(../img/elf-run.gif);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.monster-grinch {
+    width: 68px;
+    height: 88px;
+    position: absolute;
+    bottom: 100px;
+    background-image: url(../img/grinch-run.gif);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.monster-boss {
+    width: 150px;
+    height: 200px;
+    position: absolute;
+    bottom: 100px;
+    background-image: url(../img/boss-run.gif);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.pause {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	width: 300px;
+	height: 60px;
+
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 5;
+
+	background-color: #fff;
+
+	transform: translate(-50%);
+}
+.pause-text {
+	font-size: 18px;
+	text-align: center;
+	text-transform: uppercase;
+}
+.swords-hail {
+    width: 191px;
+    height: 130px;
+    
+    position: absolute;
+    left: 50%;
+    bottom: 100px;
+    z-index: 10;
+}
+.swords-trio {
+    width: 90px;
+    height: 50px;
+    
+    position: absolute;
+    left: 50%;
+    bottom: 100px;
+    z-index: 10;
+
+    /* background-image: url(../img/warrior-skill-3-cast.png); */
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.swords-trio img {
+    width: inherit;
+    height: inherit;
 }
 
 /*end arena*/
@@ -792,7 +922,7 @@ input[type="radio"].visually-hidden {
     grid-row-end: 2;
 }
 
-.using-artifact__ring-1 {
+.using-artifact__first-ring {
     grid-column-start: 1;
     grid-column-end: 1;
     grid-row-start: 3;
@@ -806,7 +936,7 @@ input[type="radio"].visually-hidden {
     grid-row-end: 3;
 }
 
-.using-artifact__ring-2 {
+.using-artifact__second-ring {
     grid-column-start: 3;
     grid-column-end: 3;
     grid-row-start: 3;
