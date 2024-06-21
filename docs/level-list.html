@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/normalse.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="navbar__main-list">
+                <li class="navbar__main-item navbar__main-item--pages">
+                    <ul class="navbar__page-list">
+                        <li class="navbar__page-item"><a href="shop.html">Магазин</a></li>
+                        <li class="navbar__page-item"><a href="inventory.html">Инвентарь</a></li>
+                        <li class="navbar__page-item"><a href="level-list.html">Бой</a></li>
+                    </ul>
+                </li>
+                <li class="navbar__main-item navbar__main-item--user">
+                    <img class="navbar__user-avatar" src="img/user-1.jpg" alt="" width="50" height="50">
+                    <ul class="navbar__user-nav-list">
+                        <li class="navbar__user-nav-item user-nav__char-list"><a href="character-list.html">Список персонажей</a></li>
+                        <li class="navbar__user-nav-item user-nav__logout"><a href="autorization.html">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="level-list-section">
+            <h1 class="level-list-section__title">Выберите Уровень</h1>
+            <ul class="level-list-section__list">
+                <li class="level-list-section__item">
+                    <a class="level-list-section__level" href="arena.html" data-level_id="1">Уровень 1</a>
+                </li>
+                <li class="level-list-section__item">
+                    <a class="level-list-section__level" href="arena.html" data-level_id="2">Уровень 2</a>
+                </li>
+                <li class="level-list-section__item">
+                    <a class="level-list-section__level" href="arena.html" data-level_id="3">Уровень 3</a>
+                </li>
+                <li class="level-list-section__item">
+                    <a class="level-list-section__level" href="arena.html" data-level_id="4">Уровень 4</a>
+                </li>
+                <li class="level-list-section__item">
+                    <a class="level-list-section__level" href="arena.html" data-level_id="5">Уровень 5</a>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="js/mokData.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

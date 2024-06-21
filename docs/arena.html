@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/normalse.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="navbar__main-list">
+                <li class="navbar__main-item navbar__main-item--pages">
+                    <ul class="navbar__page-list">
+                        <li class="navbar__page-item"><a href="shop.html">Магазин</a></li>
+                        <li class="navbar__page-item"><a href="inventory.html">Инвентарь</a></li>
+                        <li class="navbar__page-item"><a href="level-list.html">Бой</a></li>
+                    </ul>
+                </li>
+                <li class="navbar__main-item navbar__main-item--user">
+                    <img class="navbar__user-avatar" src="img/user-1.jpg" alt="" width="50" height="50">
+                    <ul class="navbar__user-nav-list">
+                        <li class="navbar__user-nav-item user-nav__char-list"><a href="character-list.html">Список персонажей</a></li>
+                        <li class="navbar__user-nav-item user-nav__logout"><a href="autorization.html">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="screen screen-game">
+            <div class="game-panel game-panel-user">
+                <div class="char-info-name">Charname</div>
+                <div class="char-info-lvl">Charlvl</div>
+                <div class="panel-xp">
+                    <div class="score-value">
+                        <span>100</span>
+                    </div>
+                </div>
+                <div class="panel-mp">
+                    <div class="score-value">
+                        <span>100</span>
+                    </div>
+                </div>
+                <div class="panel-exp">
+                    <div class="score-value">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="pause hidden">
+                <p class="pause-text">пауза</p>
+            </div>
+    
+            <div class="game-panel game-panel-scores">
+                <div class="timer">Time: <span class="timer-value">00:00</span></div>
+                <div class="kills">Killed: <span class="kills-value">0</span></div>
+            </div>
+    
+            <div class="game-panel game-panel-skills">
+                <img src="img/" alt="spell-1" data-spell="1" width="50" height="50">
+                <img src="img/" alt="spell-2" data-spell="2" width="50" height="50">
+                <img src="img/" alt="spell-3" data-spell="3" width="50" height="50">
+                <img src="img/" alt="spell-4" data-spell="4" width="50" height="50">
+            </div>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="js/mokData.js"></script>
+    <!-- <script src="js/script.js"></script> -->
+    <script src="js/arena.js"></script>
+</body>
+</html>

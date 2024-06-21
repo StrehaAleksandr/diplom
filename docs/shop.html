@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/normalse.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="navbar__main-list">
+                <li class="navbar__main-item navbar__main-item--pages">
+                    <ul class="navbar__page-list">
+                        <li class="navbar__page-item"><a href="shop.html">Магазин</a></li>
+                        <li class="navbar__page-item"><a href="inventory.html">Инвентарь</a></li>
+                        <li class="navbar__page-item"><a href="level-list.html">Бой</a></li>
+                    </ul>
+                </li>
+                <li class="navbar__main-item navbar__main-item--user">
+                    <img class="navbar__user-avatar" src="img/user-1.jpg" alt="" width="50" height="50">
+                    <ul class="navbar__user-nav-list">
+                        <li class="navbar__user-nav-item user-nav__char-list"><a href="character-list.html">Список персонажей</a></li>
+                        <li class="navbar__user-nav-item user-nav__logout"><a href="autorization.html">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="shop-section">
+            <h1 class="shop-section__title">Магазин</h1>
+            <form action="" class="shop-section__form">
+                <ul class="shop-section__list shop-artifacts__list">
+                </ul>
+                <p class="shop-section__player-gold">Текущее золото: <span class="shop-section__player-gold--value"></span></p>
+            </form>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="js/mokData.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

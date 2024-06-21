@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/normalse.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="navbar__main-list pages-hidden">
+                <li class="navbar__main-item navbar__main-item--pages hidden">
+                    <ul class="navbar__page-list">
+                        <li class="navbar__page-item"><a href="shop.html">Магазин</a></li>
+                        <li class="navbar__page-item"><a href="inventory.html">Инвентарь</a></li>
+                        <li class="navbar__page-item"><a href="level-list.html">Бой</a></li>
+                    </ul>
+                </li>
+                <li class="navbar__main-item navbar__main-item--user">
+                    <img class="navbar__user-avatar" src="img/user-1.jpg" alt="" width="50" height="50">
+                    <ul class="navbar__user-nav-list">
+                        <li class="navbar__user-nav-item user-nav__char-list"><a href="character-list.html">Список персонажей</a></li>
+                        <li class="navbar__user-nav-item user-nav__logout"><a href="autorization.html">Выйти</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="character-list-section">
+            <h1 class="character-list-section__title">Ваши персонажи</h1>
+            <div class="character-list-section__container">
+                <ul class="character-list-section__list">
+                </ul>
+                <a class="character-list-section__create-char-btn" href="create-character.html">Создать нового</a>
+            </div>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="js/mokData.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
