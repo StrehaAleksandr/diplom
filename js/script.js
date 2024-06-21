@@ -692,6 +692,9 @@ const levelListPage = document.querySelector('.level-list-section');
 if (levelListPage) {
     const arenaLink = levelListPage.querySelectorAll('.level-list-section__level');
 
+    let usingHero = JSON.parse(localStorage.getItem('choosingChar'));
+    let choosingCharacter = usingHero.choosingCharacter;
+
     function chooseArena() {
         const selectedArena = event.target.getAttribute('data-level_id');
         localStorage.setItem('selectedArena', selectedArena);

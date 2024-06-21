@@ -461,7 +461,7 @@ const shopArtifacts = [
         type: 'first-ring'
     },
     {
-        name: "ring-1",
+        name: "ring-1-1",
         dopAttack: 2,
         dopDefeance: 0,
         dopHp: 0,

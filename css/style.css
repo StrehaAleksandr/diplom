@@ -560,6 +560,20 @@ input[type="radio"].visually-hidden {
     border-color: #fff;
 }
 
+.level-list-section__level.disabled {
+    background-color: dimgrey;
+}
+
+.level-list-section__level.clear {
+    background-color: green;
+}
+
+.level-list-section__level.disabled:hover {
+    color: #000;
+    background-color: dimgrey;
+    border: 1px solid transparent;
+}
+
 /*end level-list*/
 
 /*arena*/
