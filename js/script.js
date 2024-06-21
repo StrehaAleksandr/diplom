@@ -47,7 +47,7 @@ if (registrationPage) {
         usersList.push(newUser);
 
         localStorage.setItem('users', JSON.stringify({ usersList }));
-        window.location.href = 'autorization.html';
+        window.location.href = 'index.html';
     }
 
     registaritionBtn.addEventListener('click', registration);
